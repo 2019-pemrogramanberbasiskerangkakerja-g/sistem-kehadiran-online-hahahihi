@@ -2,9 +2,9 @@
 ## Kelompok 5
 ## Tugas Sistem Kehadiran Online
    
-   - **Hilmi Raditya       05111640000164**
    - **Naufal Pranasetyo   05111540000057**
    - **Muhammad Akram A.   05111540000050**
+   - **Hilmi Raditya       05111640000164**
 
 Tools yang digunakan: 
 - [expressJS](https://expressjs.com/)
@@ -19,7 +19,7 @@ Tools yang digunakan:
 5. Buka browser menuju ke halaman http://localhost:8000
 6. Buka terminal untuk melihat log saat gagal dan berhasil login
 
-Desain Database
 
-![db](Desain%20Database.png)
+Desain Database
+![db](Database.png)
 
