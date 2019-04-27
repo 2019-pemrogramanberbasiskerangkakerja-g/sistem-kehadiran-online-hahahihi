@@ -20,7 +20,5 @@ Tools yang digunakan:
 6. Buka terminal untuk melihat log saat gagal dan berhasil login
 
 Desain Database
-![db](Desain Database.png)
+![db](Desain%20Database.png)
 
-Halaman Register dan Login
-![register](register.png)
