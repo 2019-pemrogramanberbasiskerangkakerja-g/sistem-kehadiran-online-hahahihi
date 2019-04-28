@@ -4,6 +4,7 @@ var exphbs  = require('express-handlebars');
 var bodyParser = require('body-parser');
 var moment = require('moment');
 var app = express();
+var cookieParser = require('cookie-parser')
 const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
 const url = 'mongodb://localhost:27017';
