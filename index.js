@@ -1,122 +1,134 @@
-var express = require('express');
-var session = require('express-session');
-var exphbs  = require('express-handlebars');
-var bodyParser = require('body-parser');
-var moment = require('moment');
-var app = express();
-var cookieParser = require('cookie-parser')
-const MongoClient = require('mongodb').MongoClient;
-const assert = require('assert');
-const url = 'mongodb://localhost:27017';
-const dbName = 'absensi';
+var express = require('express'); 
+var bodyParser = require("body-parser"); 
+var app = express(); 
+app.use(bodyParser.json()); 
+app.use(bodyParser.urlencoded({ extended: true })); 
+const port = process.env.port || 8000
+var mysql = require('mysql'); 
+var con = mysql.createConnection({ 
+host : 'localhost', 
+user : 'root', 
+password : 'password', 
+database : 'tugas5pbkk' 
+}); 
 
-app.use(session({secret: 'absensi' ,saveUninitialized: true,resave: true}));
-app.use(cookieParser())
-app.use(bodyParser.json());      
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(express.urlencoded())
-app.use(express.static('public'))
-app.engine('handlebars', exphbs());
-app.set('view engine', 'handlebars');
-var sess;
 
-MongoClient.connect(url, function(err, client) {
-  assert.equal(null, err);
-  console.log("Berhasil terhubung ke database");
-  const db = client.db(dbName);
-  client.close();
+app.get('/', function(req, res){
+	res.send("API Absensi - Kelompok 5 PBKK [Hahahihi]");
 });
+app.post('/tambahmatkul', function (req, res) { 
+if(req.body.nama == null || req.body.semester == null || req.body.kelas == null){ 
+res.send({status : "gagal", pesan : "data ada yang tidak lengkap", isi_data : req.body }); 
+} 
+con.connect(function(err) { 
+ 
+console.log("Connected!"); 
+var sql = "INSERT INTO matakuliah (nama, jumlah_pertemuan, semester, kelas) VALUES ?"; 
+var values = [ 
+[req.body.nama, 16, req.body.semester, req.body.kelas] 
+]; 
+con.query(sql, [values], function (err, result) { 
+console.log("data berhasil masuk"); 
+}); 
+}); 
+res.send({status : "sukses", pesan : "data berhasil masuk", isi_data : req.body }); 
+}); 
 
-app.get('/', function (req, res) {
-  res.redirect('/login');
-});
+app.post('/tambahjadwal', function (req, res) { 
+if(req.body.pertemuan == null || req.body.jam_mulai == null || req.body.jam_selesai == null || req.body.ruangan == null || req.body.matakuliah_id == null){ 
+res.send({status : "gagal", pesan : "data ada yang tidak lengkap", isi_data : req.body }); 
+} 
+con.connect(function(err) { 
+ 
+console.log("Connected!"); 
+var sql = "INSERT INTO pertemuan_matakuliah (pertemuan, jam_mulai, jam_selesai, ruangan, matakuliah_id) VALUES ?"; 
+var values = [ 
+[req.body.pertemuan, req.body.jam_mulai, req.body.jam_selesai, req.body.ruangan, req.body.matakuliah_id] 
+]; 
+con.query(sql, [values], function (err, result) { 
+ 
+console.log("data berhasil masuk"); 
+}); 
+}); 
+res.send({status : "sukses", pesan : "data berhasil masuk", isi_data : req.body }); 
+}); 
 
-app.get('/login', function (req, res) {
-    sess = req.session;
-    if(sess.nrp) {
-      return res.redirect('/home');
-    }
-    res.render('login');
-});
+app.post('/tambahmahasiswa', function (req, res) { 
+if(req.body.nama == null || req.body.nrp == null || req.body.password == null || req.body.matakuliah_id == null){ 
+res.send({status : "gagal", pesan : "data ada yang tidak lengkap", isi_data : req.body }); 
+} 
+con.connect(function(err) { 
+ 
+console.log("Connected!"); 
+var sql = "INSERT INTO mahasiswa (nrp, nama, password, matakuliah_id) VALUES ?"; 
+var values = [ 
+[req.body.nrp, req.body.nama, req.body.password, req.body.matakuliah_id] 
+]; 
+con.query(sql, [values], function (err, result) { 
+ 
+console.log("data berhasil masuk"); 
+}); 
+}); 
+res.send({status : "sukses", pesan : "data berhasil masuk", isi_data : req.body }); 
+}); 
 
-app.post('/login', function (req, res) {
-  MongoClient.connect(url, function(err, db) {
-    if (err) throw err;
-    var dbo = db.db(dbName);
-    var query = { nrp : req.body.nrp, password : req.body.password };
-    dbo.collection("user").find(query).toArray(function(err, result) {
-    if (err) throw err;
-    if(result.length > 0){
-        db.close();
-        console.log('sukses login');
-        sess = req.session;
-        sess.nrp = req.body.nrp;
-        res.cookie('NRP_SESSION',req.body.nrp, { maxAge: 900000, httpOnly: true });
-        MongoClient.connect(url, function(err, db) {
-          if (err) throw err;
-          var dbo = db.db(dbName);
-          var log = {nrp: req.body.nrp, waktu_login: moment().format()};
-          dbo.collection("log").insertOne(log, function(err, res) {
-            if (err) throw err;
-            console.log("nrp "+req.body.nrp + " telah login");
-            db.close();
-          });
-        });
-        res.redirect('/home');
-    }
-    else{
-        db.close();
-        console.log('gagal login');
-        res.redirect('/login');
-    }
-    });
-  });
-});
+app.post('/absen', function (req, res) { 
+if(req.body.mahasiswa_id == null || req.body.pertemuan == null){ 
+res.send({status : "gagal", pesan : "data ada yang tidak lengkap", isi_data : req.body }); 
+} 
+con.connect(function(err) { 
+ 
+console.log("Connected!"); 
+var sql = "INSERT INTO absensi (mahasiswa_id, pertemuan) VALUES ?"; 
+var values = [ 
+[req.body.mahasiswa_id, req.body.pertemuan] 
+]; 
+con.query(sql, [values], function (err, result) { 
+ 
+console.log("data berhasil masuk"); 
+}); 
+}); 
+res.send({status : "sukses", pesan : "absen berhasil masuk", isi_data : req.body }); 
+}); 
 
-app.get('/register', function (req, res) {
-  res.render('register');
-});
+app.get('/rekap/:id_matkul', function (req, res) { 
+con.connect(function(err) { 
 
-app.post('/register', function (req, res) {
-  const nrp = req.body.nrp;
-  const password = req.body.password;
-  const kelas = req.body.kelas;
-  const nama = req.body.nama;
-  const role = 'M';
-  MongoClient.connect(url, function(err, db) {
-    if (err) throw err;
-    var dbo = db.db(dbName);
-    var myobj = {nama :nama, nrp: nrp, password: password, kelas: kelas,role: role};
-    dbo.collection("user").insertOne(myobj, function(err, res) {
-      if (err) throw err;
-      console.log("registrasi berhasil");
-      db.close();
-    });
-  });
-  res.redirect('/login');
-});
+con.query("SELECT * FROM mahasiswa WHERE matakuliah_id = '"+req.params.id_matkul+"'", function (err, result) { 
 
-app.get('/home', function (req, res) {
-    sess = req.session;
-    if(sess.nrp) {
-      var nrp = sess.nrp;
-      res.render('home', { nrp });
-    }
-    else {
-      res.redirect('/login');
-    }
-});
+res.send({status : "sukses", pesan : "rekap peserta mata kuliah :", isi_data : result }); 
+}); 
+}); 
+}); 
 
-app.get('/logout', function (req, res) {
-  res.clearCookie('NRP_SESSION');
-  req.session.destroy((err) => {
-    if(err) {
-        return console.log(err);
-    }
-    res.redirect('/');
-  });
-});
+app.get('/rekap/:id_matkul/:pertemuan', function (req, res) { 
+con.connect(function(err) { 
 
-app.listen(8000, () => {
-  console.log('Aplikasi berjalan di port 8000');
-});
+con.query("SELECT * FROM absensi WHERE pertemuan = "+req.params.pertemuan+" AND mahasiswa_id IN (SELECT id FROM mahasiswa WHERE matakuliah_id = "+req.params.id_matkul+")" , function (err, result) { 
+
+res.send({status : "sukses", pesan : "rekap peserta mata kuliah :", isi_data : result }); 
+}); 
+}); 
+}); 
+
+app.get('/rekapmahasiswasemester/:nrp/:id_semester', function (req, res) { 
+con.connect(function(err) { 
+ 
+con.query("SELECT * FROM absensi WHERE mahasiswa_id IN (SELECT id FROM mahasiswa WHERE nrp = "+req.params.nrp+")" , function (err, result) { 
+ 
+res.send({status : "sukses", pesan : "rekap peserta mata kuliah :", isi_data : result }); 
+}); 
+}); 
+}); 
+
+app.get('/rekapmahasiswa/:nrp/:id_matkul', function (req, res) { 
+con.connect(function(err) { 
+ 
+con.query("SELECT * FROM absensi WHERE mahasiswa_id IN (SELECT id FROM mahasiswa WHERE nrp = "+req.params.nrp+")" , function (err, result) { 
+ 
+res.send({status : "sukses", pesan : "rekap peserta mata kuliah :", isi_data : result }); 
+}); 
+}); 
+}); 
+
+app.listen(port, () => console.log(`app listening on port ${port}!`));
