@@ -23,9 +23,8 @@ Desain Database
 ![db](Database.png)
 
 ## List API
-1. POST /absen 
-sent via body: idmahasiswa, pertemuan
-Untuk melakukan absen
+1. POST /absen Untuk melakukan absen
+- sent via body: idmahasiswa, pertemuan
 
 2. POST /tambahmahasiswa 
 sent via body: nrp, nama, password
