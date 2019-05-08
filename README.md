@@ -26,13 +26,14 @@ Desain Database
 1. POST /absen Untuk melakukan absen
 - sent via body: idmahasiswa, pertemuan
 
-2. POST /tambahmahasiswa 
-sent via body: nrp, nama, password
-Untuk menambah data mahasiswa
 
-3. POST /tambahpeserta
-sent via body: nrp, nama, password, idmatkul
-Untuk menambah peserta ke mata kuliah dan kelas tertentu
+2. POST /tambahmahasiswa Untuk menambah data mahasiswa
+- sent via body: nrp, nama, password
+
+
+3. POST /tambahpeserta Untuk menambah peserta ke mata kuliah dan kelas tertentu
+- sent via body: nrp, nama, password, idmatkul
+
 
 4. POST /tambahmatkul Untuk menambah data mata kuliah dan kelas
 
