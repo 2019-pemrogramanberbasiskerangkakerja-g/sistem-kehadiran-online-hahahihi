@@ -9,7 +9,6 @@
 Tools yang digunakan: 
 - [expressJS](https://expressjs.com/)
 - [MongoDB](https://www.mongodb.com/) 
-- [Template Engine hbs](https://github.com/pillarjs/hbs)
    
 ## Cara Menjalankan:
 1. Clone repository ini, buka folder dan masuk terminal
@@ -22,4 +21,30 @@ Tools yang digunakan:
 Desain Database
 
 ![db](Database.png)
+
+## List API
+1. POST /absen 
+sent via body: idmahasiswa, pertemuan
+Untuk melakukan absen
+
+2. POST /tambahmahasiswa 
+sent via body: nrp, nama, password
+Untuk menambah data mahasiswa
+
+3. POST /tambahpeserta
+sent via body: nrp, nama, password, idmatkul
+Untuk menambah peserta ke mata kuliah dan kelas tertentu
+
+4. POST /tambahmatkul Untuk menambah data mata kuliah dan kelas
+
+5. POST /tambahjadwal Untuk menambah jadwal kelas
+
+6. GET /rekap/:idmatkul Melihat rekap kuliah per semester
+
+7. GET /rekap/:idmatkul/:pertemuanke Melihat rekap kuliah per pertemuan
+
+8. GET /rekapmahasiswa/:nrp/:idmatkul Melihat rekap per mahasiswa per matkul
+
+9. GET /rekapmahasiswa/:nrp/:idsemester Melihat rekap per mahasiswa per semester [On Progress]
+
 
