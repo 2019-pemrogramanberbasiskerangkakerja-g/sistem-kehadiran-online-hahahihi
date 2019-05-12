@@ -32,7 +32,7 @@ Tools yang digunakan:
 
 5. `GET /rekapmahasiswasemester/:nrp/:idsemester` untuk Melihat rekap per mahasiswa per semester [On Progress]
 
-6. `POST /tambahmahasiswa` Untuk menambah data mahasiswa
+6. `POST /tambahmahasiswa` Untuk menambah data mahasiswa [On Progress]
 - sent via body: nrp, nama, password, idmatkul
 
 7. `POST /tambahpeserta/IDMatkul/NRP` Untuk menambah peserta ke mata kuliah dan kelas tertentu [On Progress]
