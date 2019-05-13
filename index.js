@@ -9,19 +9,14 @@ var con = mysql.createConnection({
 host : 'localhost', 
 user : 'root', 
 password : 'password', 
-database : 'tugas5pbkk' 
+database : 'absensi' 
 }); 
 
-
-app.get('/', function(req, res){
-	res.send("API Absensi - Kelompok 5 PBKK [Hahahihi]");
-});
 app.post('/tambahmatkul', function (req, res) { 
 if(req.body.nama == null || req.body.semester == null || req.body.kelas == null){ 
 res.send({status : "gagal", pesan : "data ada yang tidak lengkap", isi_data : req.body }); 
 } 
 con.connect(function(err) { 
- 
 console.log("Connected!"); 
 var sql = "INSERT INTO matakuliah (nama, jumlah_pertemuan, semester, kelas) VALUES ?"; 
 var values = [ 
@@ -39,52 +34,61 @@ if(req.body.pertemuan == null || req.body.jam_mulai == null || req.body.jam_sele
 res.send({status : "gagal", pesan : "data ada yang tidak lengkap", isi_data : req.body }); 
 } 
 con.connect(function(err) { 
- 
 console.log("Connected!"); 
 var sql = "INSERT INTO pertemuan_matakuliah (pertemuan, jam_mulai, jam_selesai, ruangan, matakuliah_id) VALUES ?"; 
 var values = [ 
 [req.body.pertemuan, req.body.jam_mulai, req.body.jam_selesai, req.body.ruangan, req.body.matakuliah_id] 
 ]; 
 con.query(sql, [values], function (err, result) { 
- 
 console.log("data berhasil masuk"); 
 }); 
 }); 
 res.send({status : "sukses", pesan : "data berhasil masuk", isi_data : req.body }); 
 }); 
+
 
 app.post('/tambahmahasiswa', function (req, res) { 
-if(req.body.nama == null || req.body.nrp == null || req.body.password == null || req.body.matakuliah_id == null){ 
+if(req.body.nama == null || req.body.nrp == null || req.body.password == null){ 
 res.send({status : "gagal", pesan : "data ada yang tidak lengkap", isi_data : req.body }); 
 } 
 con.connect(function(err) { 
- 
 console.log("Connected!"); 
-var sql = "INSERT INTO mahasiswa (nrp, nama, password, matakuliah_id) VALUES ?"; 
+var sql = "INSERT INTO mahasiswa (nrp, nama, password) VALUES ?"; 
 var values = [ 
-[req.body.nrp, req.body.nama, req.body.password, req.body.matakuliah_id] 
+[req.body.nrp, req.body.nama, req.body.password] 
 ]; 
 con.query(sql, [values], function (err, result) { 
- 
 console.log("data berhasil masuk"); 
 }); 
 }); 
 res.send({status : "sukses", pesan : "data berhasil masuk", isi_data : req.body }); 
 }); 
 
+app.post('/tambahpeserta', function(req,res){ 
+if(req.body.nrp == null || req.body.id_matkul == null){ 
+res.send({status : "gagal", pesan : "data ada yang tidak lengkap", isi_data : req.body }); 
+} 
+else{ 
+con.connect(function(err) { 
+console.log("Connected!"); 
+con.query('UPDATE mahasiswa SET matakuliah_id = ? WHERE nrp = ?', [req.body.id_matkul, req.body.nrp], function (error, results, fields) { 
+if (error) throw error; 
+console.log("data berhasil masuk"); 
+}); 
+}); 
+res.send({status : "sukses", pesan : "berhasil registrasi mahasiswa ke kelas", isi_data : req.body }); 
+} 
+}); 
+
+/// ganti nrp 
 app.post('/absen', function (req, res) { 
-if(req.body.mahasiswa_id == null || req.body.pertemuan == null){ 
+if(req.body.nrp == null || req.body.pertemuan == null){ 
 res.send({status : "gagal", pesan : "data ada yang tidak lengkap", isi_data : req.body }); 
 } 
 con.connect(function(err) { 
- 
 console.log("Connected!"); 
-var sql = "INSERT INTO absensi (mahasiswa_id, pertemuan) VALUES ?"; 
-var values = [ 
-[req.body.mahasiswa_id, req.body.pertemuan] 
-]; 
-con.query(sql, [values], function (err, result) { 
- 
+var sql = "INSERT INTO absensi (pertemuan, mahasiswa_id) SELECT "+req.body.pertemuan+", ma.id FROM mahasiswa ma WHERE ma.nrp = '"+req.body.nrp+"';"; 
+con.query(sql, function (err, result) { 
 console.log("data berhasil masuk"); 
 }); 
 }); 
@@ -103,19 +107,15 @@ res.send({status : "sukses", pesan : "rekap peserta mata kuliah :", isi_data : r
 
 app.get('/rekap/:id_matkul/:pertemuan', function (req, res) { 
 con.connect(function(err) { 
-
 con.query("SELECT * FROM absensi WHERE pertemuan = "+req.params.pertemuan+" AND mahasiswa_id IN (SELECT id FROM mahasiswa WHERE matakuliah_id = "+req.params.id_matkul+")" , function (err, result) { 
-
 res.send({status : "sukses", pesan : "rekap peserta mata kuliah :", isi_data : result }); 
 }); 
 }); 
 }); 
 
-app.get('/rekapmahasiswasemester/:nrp/:id_semester', function (req, res) { 
+app.get('/rekapmahasiswasemester/:nrp/:semester', function (req, res) { 
 con.connect(function(err) { 
- 
 con.query("SELECT * FROM absensi WHERE mahasiswa_id IN (SELECT id FROM mahasiswa WHERE nrp = "+req.params.nrp+")" , function (err, result) { 
- 
 res.send({status : "sukses", pesan : "rekap peserta mata kuliah :", isi_data : result }); 
 }); 
 }); 
@@ -123,9 +123,7 @@ res.send({status : "sukses", pesan : "rekap peserta mata kuliah :", isi_data : r
 
 app.get('/rekapmahasiswa/:nrp/:id_matkul', function (req, res) { 
 con.connect(function(err) { 
- 
-con.query("SELECT * FROM absensi WHERE mahasiswa_id IN (SELECT id FROM mahasiswa WHERE nrp = "+req.params.nrp+")" , function (err, result) { 
- 
+con.query("SELECT * FROM absensi WHERE mahasiswa_id IN (SELECT id FROM mahasiswa WHERE nrp = '"+req.params.nrp+"' AND matakuliah_id = "+req.params.id_matkul+")" , function (err, result) { 
 res.send({status : "sukses", pesan : "rekap peserta mata kuliah :", isi_data : result }); 
 }); 
 }); 
