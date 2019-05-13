@@ -20,8 +20,8 @@ Tools yang digunakan:
 
 
 ## List API
-1. `POST /absen` Untuk melakukan absen [On Progress ganti ID jadi NRP]
-- sent via body: pertemuan, id mahasiswa
+1. `POST /absen` Untuk melakukan absen 
+- sent via body: nrp, pertemuan
 
 
 2. `GET /rekap/:idmatkul` Untuk melihat rekap kuliah per semester
@@ -30,12 +30,12 @@ Tools yang digunakan:
 
 4. `GET /rekapmahasiswa/:nrp/:idmatkul` untuk Melihat rekap per mahasiswa per matkul
 
-5. `GET /rekapmahasiswasemester/:nrp/:idsemester` untuk Melihat rekap per mahasiswa per semester [On Progress]
+5. `GET /rekapmahasiswasemester/:nrp/:idsemester` untuk Melihat rekap per mahasiswa per semester 
 
 6. `POST /tambahmahasiswa` Untuk menambah data mahasiswa 
-- sent via body: nrp, nama, password, idmatkul
+- sent via body: nrp, nama, password
 
-7. `POST /tambahpeserta/IDMatkul/NRP` Untuk menambah peserta ke mata kuliah dan kelas tertentu [On Progress Tambah Tabel Daftar Peserta]
+7. `POST /tambahpeserta/` Untuk menambah peserta ke mata kuliah dan kelas tertentu 
 - sent via body: idmatkul, nrp
 
 8. `POST /tambahmatkul` Untuk menambah data mata kuliah dan kelas
