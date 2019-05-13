@@ -39,7 +39,7 @@ Tools yang digunakan:
 - sent via body: idmatkul, nrp
 
 8. `POST /tambahmatkul` Untuk menambah data mata kuliah dan kelas
-- sent via body: IDMatkul, nama matakuliah, jumlah pertemuan, kelas, semester
+- sent via body: nama, semester, kelas
 
 9. `POST /tambahjadwal` Untuk menambah jadwal kelas
 - sent via body: IDMatkul, pertemuan ke,  ruangan, jam_mulai, jam_selesai
