@@ -42,7 +42,7 @@ Tools yang digunakan:
 - sent via body: IDMatkul, nama matakuliah, jumlah pertemuan, kelas, semester
 
 9. `POST /tambahjadwal` Untuk menambah jadwal kelas
-- sent via body: IDMatkul, pertemuan ke, jam_mulai, jam_selesai, ruangan
+- sent via body: IDMatkul, pertemuan ke,  ruangan, jam_mulai, jam_selesai
 
 
 Desain Database
