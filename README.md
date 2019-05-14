@@ -42,7 +42,7 @@ Tools yang digunakan:
 *sent via body: nrp, matakuliah_id*
 
 
-8. `POST /tambahmatkul` Untuk menambah data mata kuliah dan kelas 
+8. `POST /tambahmatkul` Untuk menambah data mata kuliah  
 *sent via body: nama, semester, kelas*
 
 
