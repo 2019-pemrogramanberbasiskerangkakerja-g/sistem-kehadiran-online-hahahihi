@@ -35,11 +35,14 @@ Tools yang digunakan:
 6. `POST /tambahmahasiswa` Untuk menambah data mahasiswa 
 - sent via body: nrp, nama, password
 
+
 7. `POST /tambahpeserta/` Untuk menambah peserta ke mata kuliah dan kelas tertentu 
 - sent via body: idmatkul, nrp
 
+
 8. `POST /tambahmatkul` Untuk menambah data mata kuliah dan kelas
 - sent via body: nama, semester, kelas
+
 
 9. `POST /tambahjadwal` Untuk menambah jadwal kelas
 - sent via body: IDMatkul, pertemuan ke,  ruangan, jam_mulai, jam_selesai
