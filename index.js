@@ -8,9 +8,13 @@ var mysql = require('mysql');
 var con = mysql.createConnection({ 
 host : 'localhost', 
 user : 'root', 
-password : 'password', 
-database : 'absensi' 
+password : '', 
+database : 'tugas5pbkk' 
 }); 
+
+app.get('/', function(req,res){
+	res.send('PBKK - Hahahihi - Hilmi - Nopal - Akram');
+});
 
 app.post('/tambahmatkul', function (req, res) { 
 if(req.body.nama == null || req.body.semester == null || req.body.kelas == null){ 

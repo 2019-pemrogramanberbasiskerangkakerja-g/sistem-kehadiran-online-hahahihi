@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.6deb5
+-- version 4.8.4
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: May 06, 2019 at 03:34 AM
--- Server version: 5.7.26-0ubuntu0.18.04.1
--- PHP Version: 7.2.17-0ubuntu0.18.04.1
+-- Host: localhost
+-- Generation Time: May 18, 2019 at 04:09 PM
+-- Server version: 10.1.37-MariaDB
+-- PHP Version: 7.3.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -38,10 +40,15 @@ CREATE TABLE `absensi` (
 --
 
 INSERT INTO `absensi` (`id`, `tanggal_waktu`, `pertemuan`, `mahasiswa_id`) VALUES
-(1, '2019-05-05 17:14:48', 1, 1),
-(2, '2019-05-05 19:41:57', 1, 1),
-(3, '2019-05-05 19:42:06', 2, 1),
-(4, '2019-05-05 19:42:13', 3, 1);
+(2, '2019-05-12 17:30:42', 1, 7),
+(3, '2019-05-12 17:33:34', 1, 8),
+(4, '2019-05-12 17:33:47', 2, 8),
+(5, '2019-05-12 17:33:49', 3, 8),
+(6, '2019-05-12 17:33:52', 4, 8),
+(7, '2019-05-12 17:33:54', 5, 8),
+(8, '2019-05-12 17:33:57', 6, 8),
+(9, '2019-05-12 17:34:03', 3, 7),
+(10, '2019-05-12 17:34:05', 5, 7);
 
 -- --------------------------------------------------------
 
@@ -54,7 +61,7 @@ CREATE TABLE `mahasiswa` (
   `nrp` varchar(30) NOT NULL,
   `nama` varchar(30) NOT NULL,
   `password` varchar(30) NOT NULL,
-  `matakuliah_id` int(11) NOT NULL
+  `matakuliah_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -62,9 +69,10 @@ CREATE TABLE `mahasiswa` (
 --
 
 INSERT INTO `mahasiswa` (`id`, `nrp`, `nama`, `password`, `matakuliah_id`) VALUES
-(1, '5116100164', 'Hilmi Raditya', '164', 1),
-(3, '5116100168', 'Percobaan', '168', 1),
-(5, '5115100057', 'Naufal', '123', 1);
+(7, '164', 'hilmi', 'hilmi', 11),
+(8, '057', 'naufalpf', 'naufalpf', 13),
+(9, '050', 'akram', 'akram', 13),
+(10, '058', 'test', 'test', NULL);
 
 -- --------------------------------------------------------
 
@@ -85,9 +93,10 @@ CREATE TABLE `matakuliah` (
 --
 
 INSERT INTO `matakuliah` (`id`, `nama`, `jumlah_pertemuan`, `semester`, `kelas`) VALUES
-(1, 'PBKK', 16, '6', 'G'),
-(2, 'PBKK', 16, '6', 'H'),
-(3, 'PBKK', 16, '8', 'A');
+(11, 'PBKK', 16, '6', 'G'),
+(12, 'PBKK', 16, '6', 'H'),
+(13, 'IMK', 16, '6', 'H'),
+(14, 'bdt', 16, '6', 'H');
 
 -- --------------------------------------------------------
 
@@ -109,8 +118,13 @@ CREATE TABLE `pertemuan_matakuliah` (
 --
 
 INSERT INTO `pertemuan_matakuliah` (`id`, `pertemuan`, `jam_mulai`, `jam_selesai`, `ruangan`, `matakuliah_id`) VALUES
-(1, 1, '08:45:00', '13:00:00', '105a', 1),
-(2, 2, '10:00:00', '12:30:00', '107a', 2);
+(2, 1, '09:30:00', '12:30:00', '105a', 11),
+(3, 1, '12:30:00', '15:00:00', '105a', 12),
+(4, 1, '12:30:00', '15:00:00', '105a', 13),
+(5, 1, '12:30:00', '15:00:00', '105a', 14),
+(6, 2, '12:30:00', '15:00:00', '105a', 14),
+(7, 3, '12:30:00', '15:00:00', '105a', 14),
+(8, 4, '12:30:00', '15:00:00', '105a', 14);
 
 --
 -- Indexes for dumped tables
@@ -151,22 +165,26 @@ ALTER TABLE `pertemuan_matakuliah`
 -- AUTO_INCREMENT for table `absensi`
 --
 ALTER TABLE `absensi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
 --
 -- AUTO_INCREMENT for table `mahasiswa`
 --
 ALTER TABLE `mahasiswa`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
 --
 -- AUTO_INCREMENT for table `matakuliah`
 --
 ALTER TABLE `matakuliah`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
 --
 -- AUTO_INCREMENT for table `pertemuan_matakuliah`
 --
 ALTER TABLE `pertemuan_matakuliah`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
 --
 -- Constraints for dumped tables
 --
@@ -190,6 +208,7 @@ ALTER TABLE `mahasiswa`
 --
 ALTER TABLE `pertemuan_matakuliah`
   ADD CONSTRAINT `pertemuan_matakuliah_ibfk_1` FOREIGN KEY (`matakuliah_id`) REFERENCES `matakuliah` (`id`);
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
