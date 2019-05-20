@@ -24,7 +24,7 @@ Tools yang digunakan:
 ## Endpoint List API
 1. POST `/absen` Untuk melakukan absen  
 *sent via body: nrp, pertemuan*
-![1](1.jpg)
+![1](img/1.jpg)
 
 2. GET `/rekap/:idmatkul` Untuk melihat rekap kuliah per semester
 ![2](2.jpg)
