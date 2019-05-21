@@ -22,37 +22,43 @@ Tools yang digunakan:
 
 
 ## Endpoint List API
+Test API dapat diakses di halaman http://10.151.33.43:8000/ atau http://1729da82.ngrok.io
 1. POST `/absen` Untuk melakukan absen  
 *sent via body: nrp, pertemuan*
-* ![1](img/1.jpg)
+
+![1](img/1.jpg)
 
 2. GET `/rekap/:idmatkul` Untuk melihat rekap kuliah per semester
-* ![2](img/2.jpg)
+![2](img/2.jpg)
 
 3. GET `rekap/:idmatkul/:pertemuanke` untuk Melihat rekap kuliah per pertemuan
-* ![3](img/3.jpg)
+![3](img/3.jpg)
 
 4. GET `/rekapmahasiswa/:nrp/:idmatkul` untuk Melihat rekap per mahasiswa per matkul
-* ![4](img/4.jpg)
+![4](img/4.jpg)
 
 5. GET `/rekapmahasiswasemester/:nrp/:idsemester` untuk Melihat rekap per mahasiswa per semester 
 
 6. POST `/tambahmahasiswa` Untuk menambah data mahasiswa  
 *sent via body: nrp, nama, password*
-* ![6](img/6.jpg)
+
+![6](img/6.jpg)
 
 
 7. POST `/tambahpeserta/` Untuk menambah peserta ke mata kuliah dan kelas tertentu  
 *sent via body: nrp, id_matkul*
-* ![7](img/7.jpg)
+
+![7](img/7.jpg)
 
 8. POST `/tambahmatkul` Untuk menambah data mata kuliah  
 *sent via body: nama, semester, kelas*
-* ![8](img/8.jpg)
+
+![8](img/8.jpg)
 
 9. POST `/tambahjadwal` Untuk menambah jadwal kelas  
 *sent via body: matakuliah_id, pertemuan, ruangan, jam_mulai, jam_selesai*
-* ![9](img/9.jpg)
+
+![9](img/9.jpg)
 
 Desain Database
 
