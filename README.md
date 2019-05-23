@@ -23,41 +23,60 @@
 
 ## Endpoint List API
 
-Test API dapat diakses di halaman http://10.151.33.43:8000/ atau http://466b262e.ngrok.io
-1. POST `/absen` Untuk melakukan absen  
-*sent via body: nrp, ruangan*
+Test API dapat diakses di halaman http://10.151.33.43:8000/ atau http://9884449c.ngrok.io 
 
-2. GET `/rekap/:idmatkul` Untuk melihat rekap kuliah per semester
-![2](img/2.jpg)
+API Cek Database
+Terdapat 2 tabel yang dapat diakses, yaitu Tabel Mahasiswa dan Tabel matakuliah 
+`GET /mahasiwa` 
+Hasilnya:
+`GET /matakuliah`
+Hasilnya: 
 
-3. GET `rekap/:idmatkul/:pertemuanke` untuk Melihat rekap kuliah per pertemuan
-![3](img/3.jpg)
+1. POST `/tambahmahasiswa` Untuk menambah data mahasiswa  
+- *sent via body: nrp, nama, password*
+- Hasilnya
 
-4. GET `/rekapmahasiswa/:nrp/:idmatkul` untuk Melihat rekap per mahasiswa per matkul
-![4](img/4.jpg)
+![1](img/1.jpg)
 
-5. GET `/rekapmahasiswasemester/:nrp/:idsemester` untuk Melihat rekap per mahasiswa per semester 
+2. POST `/tambahmatkul` Untuk menambah data mata kuliah  
+- *sent via body: kode_matkul, nama, semester, kelas*
+- Hasilnya
 
-6. POST `/tambahmahasiswa` Untuk menambah data mahasiswa  
-*sent via body: nrp, nama, password*
+![2](img/tambahmatkul.jpg)
 
-![6](img/6.jpg)
+3. POST `/tambahpesertakelas/` Untuk menambah peserta ke mata kuliah dan kelas tertentu  
+- *sent via body: nrp, id_matkul*
+- Hasilnya
 
+![3](img/tambahpesertakelas.jpg)
 
-7. POST `/tambahpeserta/` Untuk menambah peserta ke mata kuliah dan kelas tertentu  
-*sent via body: nrp, id_matkul*
+4. POST `/tambahjadwal` Untuk menambah jadwal kelas  
+- *sent via body: matakuliah_id, pertemuan, ruangan, jam_mulai, jam_selesai*
+- Hasilnya
 
-![7](img/7.jpg)
+![4](img/tambahjadwal.jpg)
 
-8. POST `/tambahmatkul` Untuk menambah data mata kuliah  
-*sent via body: nama, semester, kelas*
+5. POST `/absen` Untuk melakukan absen  
+- *sent via body: nrp, ruangan*
+- Hasilnya
 
-![8](img/8.jpg)
+![5](img/absen.jpg)
 
-9. POST `/tambahjadwal` Untuk menambah jadwal kelas  
-*sent via body: matakuliah_id, pertemuan, ruangan, jam_mulai, jam_selesai*
+6. GET `/rekap/:idmatkul` Untuk melihat rekap kuliah per semester
+![6](img/rekapmatkul.jpg)
 
-![9](img/9.jpg)
+7. GET `rekap/:idmatkul/:pertemuanke` untuk Melihat rekap kuliah per pertemuan
+- Contoh: http://9884449c.ngrok.io/rekap/IF999/1
+- Hasilnya 
+
+![7](img/rekapmatkulpertemuan.jpg)
+
+8. GET `/rekapmahasiswa/:nrp/:idmatkul` untuk Melihat rekap per mahasiswa per matkul
+![8](img/rekapmhsmatkul.jpg)
+
+9. GET `/rekapmahasiswasemester/:nrp/:idsemester` untuk Melihat rekap per mahasiswa per semester 
+![8](img/rekapmhspertemuan.jpg)
+
 
 Desain Database
 
