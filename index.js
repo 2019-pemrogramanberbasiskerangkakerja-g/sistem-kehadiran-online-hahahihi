@@ -54,6 +54,8 @@ app.post('/tambahmatkul', function (req, res) {
   }
 });
 
+
+///YANG HARUS DIBENERIN (DONE)////
 app.post('/tambahjadwal', function (req, res) {
   if(req.body.pertemuan == null || req.body.jam_mulai == null || req.body.jam_selesai == null || req.body.ruangan == null || req.body.kode_matkul == null){
     res.send({status : "gagal", pesan : "data ada yang tidak lengkap", isi_data : req.body });
@@ -69,7 +71,8 @@ app.post('/tambahjadwal', function (req, res) {
   else{
     con.connect(function(err) {
       console.log("Connected!");
-      var sql = "INSERT INTO  pertemuan_matakuliah (pertemuan, jam_mulai, jam_selesai, ruangan, matakuliah_id) VALUES ("+req.body.pertemuan+req.body.jam_mulai+req.body.jam_selesai+req.body.ruangan+"(SELECT id FROM matakuliah where kode_matkul = "+req.body.kode_matkul+")"+")";
+      var sql = "INSERT INTO  pertemuan_matakuliah (pertemuan, jam_mulai, jam_selesai, ruangan, matakuliah_id) VALUES ("+req.body.pertemuan+",'"+req.body.jam_mulai+"','"+req.body.jam_selesai+"','"+req.body.ruangan+"',"+"(SELECT id FROM matakuliah where kode_matkul = '"+req.body.kode_matkul+"')"+");";
+      // console.log(sql);
       con.query(sql, function (err, result) {
         console.log("data berhasil masuk");
       });
@@ -77,6 +80,7 @@ app.post('/tambahjadwal', function (req, res) {
     res.send({status : "sukses", pesan : "data berhasil masuk", isi_data : req.body });
   }
 });
+/// =================== ////
 
 
 app.post('/tambahmahasiswa', function (req, res) {
@@ -116,24 +120,32 @@ app.post('/tambahpesertakelas', function(req,res){
   else{
     con.connect(function(err) {
       console.log("Connected!");
-      con.query("SELECT * FROM mahasiswa where NRP ="+req.body.nrp, function(error, results, fields){
+      con.query("SELECT * FROM matakuliah where kode_matkul ='"+req.body.kode_matkul+"'", function (error, results, fields) {
         if(results.length == 0){
-          res.send({status : "gagal", pesan : "nrp tidak terdaftar", isi_data : req.body });
+          res.send({status : "gagal", pesan : "matkul tidak terdaftar", isi_data : req.body });
         }
         else{
-          var cek_sql = "SELECT * FROM ambil_matakuliah WHERE matakuliah_id = (SELECT id FROM matakuliah where kode_matkul = "+req.body.kode_matkul+") AND mahasiswa_id = (SELECT id FROM mahasiswa WHERE nrp = "+req.body.nrp+");";
-          con.query(cek_sql, function (error, results, fields) {
-            if (error) throw error;
-            console.log(results)
-            if(results.length > 0){
-              res.send({status : "gagal", pesan: "mahasiswa telah mendaftar matakuliah ini", isi_data : req.body});
+          con.query("SELECT * FROM mahasiswa WHERE nrp ="+req.body.nrp, function(error, results, fields){
+            if(results.length == 0){
+              res.send({status : "gagal", pesan : "nrp tidak terdaftar", isi_data : req.body });
             }
             else{
-              var sql = "INSERT INTO ambil_matakuliah(matakuliah_id,mahasiswa_id) VALUES ((SELECT id FROM matakuliah WHERE kode_matkul = "+req.body.kode_matkul+"),(SELECT id FROM mahasiswa WHERE nrp = "+req.body.nrp+"))";
-              con.query(sql, function (error, results, fields) {
+              var cek_sql = "SELECT * FROM ambil_matakuliah WHERE matakuliah_id = (SELECT id FROM matakuliah where kode_matkul = '"+req.body.kode_matkul+"') AND mahasiswa_id = (SELECT id FROM mahasiswa WHERE nrp = "+req.body.nrp+");";
+              con.query(cek_sql, function (error, results, fields) {
                 if (error) throw error;
-                console.log("data berhasil masuk");
-                res.send({status : "sukses", pesan : "berhasil registrasi mahasiswa ke kelas", isi_data : req.body });  
+                console.log(results)
+                if(results.length > 0){
+                  res.send({status : "gagal", pesan: "mahasiswa telah mendaftar matakuliah ini", isi_data : req.body});
+                }
+                else{
+                  var sql = "INSERT INTO ambil_matakuliah(matakuliah_id,mahasiswa_id) VALUES ((SELECT id FROM matakuliah WHERE kode_matkul = '"+req.body.kode_matkul+"'),(SELECT id FROM mahasiswa WHERE nrp = "+req.body.nrp+"))";
+                  console.log(sql);
+                  con.query(sql, function (error, results, fields) {
+                    if (error) throw error;
+                    console.log("data berhasil masuk");
+                    res.send({status : "sukses", pesan : "berhasil registrasi mahasiswa ke kelas", isi_data : req.body });  
+                  });
+                }
               });
             }
           });
