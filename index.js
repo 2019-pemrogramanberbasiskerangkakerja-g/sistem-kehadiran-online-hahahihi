@@ -40,9 +40,9 @@ app.post('/tambahmatkul', function (req, res) {
           res.send({status : "gagal", pesan : "kode matakuliah telah terdaftar", isi_data : req.body });      
         }
         else{
-          var sql = "INSERT INTO matakuliah (nama, jumlah_pertemuan, semester, kelas) VALUES ?";
+          var sql = "INSERT INTO matakuliah (nama, jumlah_pertemuan, semester, kelas, kode_matkul) VALUES ?";
           var values = [
-            [req.body.nama, 16, req.body.semester, req.body.kelas]
+            [req.body.nama, 16, req.body.semester, req.body.kelas, req.body.kode_matkul]
           ];
           con.query(sql, [values], function (err, result) {
             console.log("data berhasil masuk");
