@@ -50,7 +50,7 @@ Terdapat 2 tabel yang dapat diakses, yaitu Tabel Mahasiswa dan Tabel matakuliah
 ![2](img/tambahmatkul.jpg)
 
 3. POST `/tambahpesertakelas/` Untuk menambah peserta ke mata kuliah dan kelas tertentu  
-- *sent via body: nrp, id_matkul*
+- *sent via body: nrp, kode_matkul*
 - Hasilnya
 
 ![3](img/tambahpesertakelas.jpg)
