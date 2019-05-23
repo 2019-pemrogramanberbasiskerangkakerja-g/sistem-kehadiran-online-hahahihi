@@ -116,12 +116,12 @@ app.post('/tambahpesertakelas', function(req,res){
   else{
     con.connect(function(err) {
       console.log("Connected!");
-      con.query("SELECT * FROM mahasiswa WHERE nrp ="+req.body.nrp, function(error, results, fields){
+      con.query("SELECT * FROM mahasiswa where NRP ="+req.body.nrp, function(error, results, fields){
         if(results.length == 0){
           res.send({status : "gagal", pesan : "nrp tidak terdaftar", isi_data : req.body });
         }
         else{
-          var cek_sql = "SELECT * FROM ambil_matakuliah WHERE matakuliah_id = (SELECT id FROM matakuliah where kode_matkul = '"+req.body.kode_matkul+"') AND mahasiswa_id = (SELECT id FROM mahasiswa WHERE nrp = "+req.body.nrp+");";
+          var cek_sql = "SELECT * FROM ambil_matakuliah WHERE matakuliah_id = (SELECT id FROM matakuliah where kode_matkul = "+req.body.kode_matkul+") AND mahasiswa_id = (SELECT id FROM mahasiswa WHERE nrp = "+req.body.nrp+");";
           con.query(cek_sql, function (error, results, fields) {
             if (error) throw error;
             console.log(results)
@@ -129,7 +129,7 @@ app.post('/tambahpesertakelas', function(req,res){
               res.send({status : "gagal", pesan: "mahasiswa telah mendaftar matakuliah ini", isi_data : req.body});
             }
             else{
-              var sql = "INSERT INTO ambil_matakuliah(matakuliah_id,mahasiswa_id) VALUES ((SELECT id FROM matakuliah WHERE kode_matkul = '"+req.body.kode_matkul+"'),(SELECT id FROM mahasiswa WHERE nrp = "+req.body.nrp+"))";
+              var sql = "INSERT INTO ambil_matakuliah(matakuliah_id,mahasiswa_id) VALUES ((SELECT id FROM matakuliah WHERE kode_matkul = "+req.body.kode_matkul+"),(SELECT id FROM mahasiswa WHERE nrp = "+req.body.nrp+"))";
               con.query(sql, function (error, results, fields) {
                 if (error) throw error;
                 console.log("data berhasil masuk");
