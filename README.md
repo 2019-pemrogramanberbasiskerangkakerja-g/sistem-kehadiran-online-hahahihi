@@ -24,9 +24,7 @@ Tools yang digunakan:
 ## Endpoint List API
 Test API dapat diakses di halaman http://10.151.33.43:8000/ atau http://1729da82.ngrok.io
 1. POST `/absen` Untuk melakukan absen  
-*sent via body: nrp, pertemuan*
-
-![1](img/1.jpg)
+*sent via body: nrp, ruangan*
 
 2. GET `/rekap/:idmatkul` Untuk melihat rekap kuliah per semester
 ![2](img/2.jpg)
