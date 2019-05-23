@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 18, 2019 at 04:09 PM
+-- Generation Time: May 23, 2019 at 05:17 PM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.1
 
@@ -31,24 +31,37 @@ SET time_zone = "+00:00";
 CREATE TABLE `absensi` (
   `id` int(11) NOT NULL,
   `tanggal_waktu` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `pertemuan` int(11) NOT NULL,
-  `mahasiswa_id` int(11) NOT NULL
+  `mahasiswa_id` int(11) NOT NULL,
+  `pertemuan_matakuliah_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `absensi`
 --
 
-INSERT INTO `absensi` (`id`, `tanggal_waktu`, `pertemuan`, `mahasiswa_id`) VALUES
-(2, '2019-05-12 17:30:42', 1, 7),
-(3, '2019-05-12 17:33:34', 1, 8),
-(4, '2019-05-12 17:33:47', 2, 8),
-(5, '2019-05-12 17:33:49', 3, 8),
-(6, '2019-05-12 17:33:52', 4, 8),
-(7, '2019-05-12 17:33:54', 5, 8),
-(8, '2019-05-12 17:33:57', 6, 8),
-(9, '2019-05-12 17:34:03', 3, 7),
-(10, '2019-05-12 17:34:05', 5, 7);
+INSERT INTO `absensi` (`id`, `tanggal_waktu`, `mahasiswa_id`, `pertemuan_matakuliah_id`) VALUES
+(14, '2019-05-23 04:37:11', 7, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ambil_matakuliah`
+--
+
+CREATE TABLE `ambil_matakuliah` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `mahasiswa_id` int(11) DEFAULT NULL,
+  `matakuliah_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `ambil_matakuliah`
+--
+
+INSERT INTO `ambil_matakuliah` (`id`, `mahasiswa_id`, `matakuliah_id`) VALUES
+(2, 7, 11),
+(3, 8, 11),
+(11, 18, 11);
 
 -- --------------------------------------------------------
 
@@ -60,19 +73,19 @@ CREATE TABLE `mahasiswa` (
   `id` int(11) NOT NULL,
   `nrp` varchar(30) NOT NULL,
   `nama` varchar(30) NOT NULL,
-  `password` varchar(30) NOT NULL,
-  `matakuliah_id` int(11) DEFAULT NULL
+  `password` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `mahasiswa`
 --
 
-INSERT INTO `mahasiswa` (`id`, `nrp`, `nama`, `password`, `matakuliah_id`) VALUES
-(7, '164', 'hilmi', 'hilmi', 11),
-(8, '057', 'naufalpf', 'naufalpf', 13),
-(9, '050', 'akram', 'akram', 13),
-(10, '058', 'test', 'test', NULL);
+INSERT INTO `mahasiswa` (`id`, `nrp`, `nama`, `password`) VALUES
+(7, '164', 'hilmi', 'hilmi'),
+(8, '057', 'naufalpf', 'naufalpf'),
+(9, '050', 'akram', 'akram'),
+(10, '058', 'test', 'test'),
+(18, '', '', '');
 
 -- --------------------------------------------------------
 
@@ -85,18 +98,19 @@ CREATE TABLE `matakuliah` (
   `nama` varchar(30) NOT NULL,
   `jumlah_pertemuan` int(11) NOT NULL,
   `semester` varchar(30) NOT NULL,
-  `kelas` varchar(30) NOT NULL
+  `kelas` varchar(30) NOT NULL,
+  `kode_matkul` varchar(11) NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `matakuliah`
 --
 
-INSERT INTO `matakuliah` (`id`, `nama`, `jumlah_pertemuan`, `semester`, `kelas`) VALUES
-(11, 'PBKK', 16, '6', 'G'),
-(12, 'PBKK', 16, '6', 'H'),
-(13, 'IMK', 16, '6', 'H'),
-(14, 'bdt', 16, '6', 'H');
+INSERT INTO `matakuliah` (`id`, `nama`, `jumlah_pertemuan`, `semester`, `kelas`, `kode_matkul`) VALUES
+(11, 'PBKK', 16, '6', 'G', 'IF999'),
+(12, 'PBKK', 16, '6', 'H', 'IF777'),
+(13, 'IMK', 16, '6', 'H', 'IF888'),
+(14, 'bdt', 16, '6', 'H', 'if666');
 
 -- --------------------------------------------------------
 
@@ -107,8 +121,8 @@ INSERT INTO `matakuliah` (`id`, `nama`, `jumlah_pertemuan`, `semester`, `kelas`)
 CREATE TABLE `pertemuan_matakuliah` (
   `id` int(11) NOT NULL,
   `pertemuan` int(11) NOT NULL,
-  `jam_mulai` time NOT NULL,
-  `jam_selesai` time NOT NULL,
+  `jam_mulai` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `jam_selesai` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `ruangan` varchar(30) NOT NULL,
   `matakuliah_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -118,13 +132,7 @@ CREATE TABLE `pertemuan_matakuliah` (
 --
 
 INSERT INTO `pertemuan_matakuliah` (`id`, `pertemuan`, `jam_mulai`, `jam_selesai`, `ruangan`, `matakuliah_id`) VALUES
-(2, 1, '09:30:00', '12:30:00', '105a', 11),
-(3, 1, '12:30:00', '15:00:00', '105a', 12),
-(4, 1, '12:30:00', '15:00:00', '105a', 13),
-(5, 1, '12:30:00', '15:00:00', '105a', 14),
-(6, 2, '12:30:00', '15:00:00', '105a', 14),
-(7, 3, '12:30:00', '15:00:00', '105a', 14),
-(8, 4, '12:30:00', '15:00:00', '105a', 14);
+(2, 1, '2019-05-21 17:00:00', '2019-05-23 17:00:00', '105a', 11);
 
 --
 -- Indexes for dumped tables
@@ -135,14 +143,22 @@ INSERT INTO `pertemuan_matakuliah` (`id`, `pertemuan`, `jam_mulai`, `jam_selesai
 --
 ALTER TABLE `absensi`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `mahasiswa_id` (`mahasiswa_id`);
+  ADD KEY `mahasiswa_id` (`mahasiswa_id`),
+  ADD KEY `pertemuan_matakuliah_id` (`pertemuan_matakuliah_id`);
+
+--
+-- Indexes for table `ambil_matakuliah`
+--
+ALTER TABLE `ambil_matakuliah`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `mahasiswa_id` (`mahasiswa_id`),
+  ADD KEY `matakuliah_id` (`matakuliah_id`);
 
 --
 -- Indexes for table `mahasiswa`
 --
 ALTER TABLE `mahasiswa`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `matakuliah_id` (`matakuliah_id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `matakuliah`
@@ -165,13 +181,19 @@ ALTER TABLE `pertemuan_matakuliah`
 -- AUTO_INCREMENT for table `absensi`
 --
 ALTER TABLE `absensi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- AUTO_INCREMENT for table `ambil_matakuliah`
+--
+ALTER TABLE `ambil_matakuliah`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `mahasiswa`
 --
 ALTER TABLE `mahasiswa`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `matakuliah`
@@ -183,7 +205,7 @@ ALTER TABLE `matakuliah`
 -- AUTO_INCREMENT for table `pertemuan_matakuliah`
 --
 ALTER TABLE `pertemuan_matakuliah`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
@@ -193,15 +215,15 @@ ALTER TABLE `pertemuan_matakuliah`
 -- Constraints for table `absensi`
 --
 ALTER TABLE `absensi`
-  ADD CONSTRAINT `absensi_ibfk_1` FOREIGN KEY (`mahasiswa_id`) REFERENCES `mahasiswa` (`id`),
-  ADD CONSTRAINT `absensi_ibfk_2` FOREIGN KEY (`mahasiswa_id`) REFERENCES `mahasiswa` (`id`);
+  ADD CONSTRAINT `absensi_ibfk_2` FOREIGN KEY (`pertemuan_matakuliah_id`) REFERENCES `pertemuan_matakuliah` (`id`),
+  ADD CONSTRAINT `absensi_ibfk_3` FOREIGN KEY (`mahasiswa_id`) REFERENCES `mahasiswa` (`id`);
 
 --
--- Constraints for table `mahasiswa`
+-- Constraints for table `ambil_matakuliah`
 --
-ALTER TABLE `mahasiswa`
-  ADD CONSTRAINT `mahasiswa_ibfk_1` FOREIGN KEY (`matakuliah_id`) REFERENCES `matakuliah` (`id`),
-  ADD CONSTRAINT `mahasiswa_ibfk_2` FOREIGN KEY (`matakuliah_id`) REFERENCES `matakuliah` (`id`);
+ALTER TABLE `ambil_matakuliah`
+  ADD CONSTRAINT `ambil_matakuliah_ibfk_1` FOREIGN KEY (`mahasiswa_id`) REFERENCES `mahasiswa` (`id`),
+  ADD CONSTRAINT `ambil_matakuliah_ibfk_2` FOREIGN KEY (`matakuliah_id`) REFERENCES `matakuliah` (`id`);
 
 --
 -- Constraints for table `pertemuan_matakuliah`
