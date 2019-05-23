@@ -32,7 +32,10 @@ app.post('/tambahmatkul', function (req, res) {
   }
   else{
     con.connect(function(err) {
-      con.query("SELECT * FROM matakuliah where kode_matkul = "+req.body.kode_matkul, function (err, result) {
+      con.query("SELECT * FROM matakuliah where kode_matkul = '"+req.body.kode_matkul+"'", function (err, result) {
+        console.log("====");
+        console.log(result);
+        console.log("====");
         if(result.length > 0){
           res.send({status : "gagal", pesan : "kode matakuliah telah terdaftar", isi_data : req.body });      
         }
@@ -52,25 +55,22 @@ app.post('/tambahmatkul', function (req, res) {
 });
 
 app.post('/tambahjadwal', function (req, res) {
-  if(req.body.pertemuan == null || req.body.jam_mulai == null || req.body.jam_selesai == null || req.body.ruangan == null || req.body.matakuliah_id == null){
+  if(req.body.pertemuan == null || req.body.jam_mulai == null || req.body.jam_selesai == null || req.body.ruangan == null || req.body.kode_matkul == null){
     res.send({status : "gagal", pesan : "data ada yang tidak lengkap", isi_data : req.body });
   }
   else if(validator.isEmpty(req.body.pertemuan) || 
     validator.isEmpty(req.body.jam_mulai) || 
     validator.isEmpty(req.body.jam_selesai) ||
     validator.isEmpty(req.body.ruangan) ||
-    validator.isEmpty(req.body.matakuliah_id)
+    validator.isEmpty(req.body.kode_matkul)
   ){
     res.send({status : "gagal", pesan : "data ada yang tidak lengkap", isi_data : req.body });
   }
   else{
     con.connect(function(err) {
       console.log("Connected!");
-      var sql = "INSERT INTO  pertemuan_matakuliah (pertemuan, jam_mulai, jam_selesai, ruangan, matakuliah_id) VALUES ?";
-      var values = [
-        [req.body.pertemuan, req.body.jam_mulai, req.body.jam_selesai, req.body.ruangan, req.body.matakuliah_id]
-      ];
-      con.query(sql, [values], function (err, result) {
+      var sql = "INSERT INTO  pertemuan_matakuliah (pertemuan, jam_mulai, jam_selesai, ruangan, matakuliah_id) VALUES ("+req.body.pertemuan+req.body.jam_mulai+req.body.jam_selesai+req.body.ruangan+"(SELECT id FROM matakuliah where kode_matkul = "+req.body.kode_matkul+")"+")";
+      con.query(sql, function (err, result) {
         console.log("data berhasil masuk");
       });
     });
@@ -81,23 +81,23 @@ app.post('/tambahjadwal', function (req, res) {
 
 app.post('/tambahmahasiswa', function (req, res) {
   if(req.body.nama == null || req.body.nrp == null || req.body.password == null){
-    res.send({status : "gagal", pesan : "data ada yang tidak lengkap", isi_data : req.body });
+    res.send({status : "gagal", pesan : "data ada yang tidak lengkap ", isi_data : req.body });
   }
   else if(validator.isEmpty(req.body.nama) || validator.isEmpty(req.body.nrp) || validator.isEmpty(req.body.password)){
-    res.send({status : "gagal", pesan : "data ada yang tidak lengkap", isi_data : req.body });
+    res.send({status : "gagal", pesan : "data ada yang tidak lengkap ", isi_data : req.body });
   }
   else{
     con.connect(function(err){
-      var sql_cek = "SELECT * FROM mahasiswa where nrp="+req.body.nrp;
+      var sql_cek = "SELECT * FROM mahasiswa where nrp='"+req.body.nrp+"'";
       con.query(sql_cek, function (err, result) {
         console.log(result);
         if(result.length > 0){
           res.send({status : "gagal", pesan : "nrp telah terdaftar", isi_data : req.body });
         }
         else{
-          var sql = "INSERT INTO  mahasiswa (nrp, nama, password) VALUES ?";
-          var values = [req.body.nrp, req.body.nama, req.body.password];
-          con.query(sql, [values], function (err, result) {
+          var sql = "INSERT INTO mahasiswa (nrp, nama, password) VALUES ('"+req.body.nrp+"', '"+req.body.nama+"', '"+req.body.password+"');";
+          con.query(sql, function (err, result) {
+            console.log(result);
             res.send({status : "sukses", pesan : "data berhasil masuk", isi_data : req.body });
           });
         }
