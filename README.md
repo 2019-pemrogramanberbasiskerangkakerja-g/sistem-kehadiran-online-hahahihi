@@ -29,14 +29,19 @@ API Cek Database
 Terdapat 2 tabel yang dapat diakses, yaitu Tabel Mahasiswa dan Tabel matakuliah 
 `GET /mahasiwa` 
 Hasilnya:
+
+![1](img/mahasiswa.jpg)
+
 `GET /matakuliah`
 Hasilnya: 
+
+![1](img/matkul.jpg)
 
 1. POST `/tambahmahasiswa` Untuk menambah data mahasiswa  
 - *sent via body: nrp, nama, password*
 - Hasilnya
 
-![1](img/1.jpg)
+![1](img/tambahmhs.jpg)
 
 2. POST `/tambahmatkul` Untuk menambah data mata kuliah  
 - *sent via body: kode_matkul, nama, semester, kelas*
