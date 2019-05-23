@@ -8,10 +8,10 @@
     
 ---
 
-Tools yang digunakan: 
-- [expressJS](https://expressjs.com/)
-- [MySQL](https://www.mysql.com/) 
-- [Template Engine Handlebars](https://www.npmjs.com/package/express-handlebars)
+## Teknologi yang digunakan: 
+- Framework: [expressJS](https://expressjs.com/)
+- Database: [MySQL](https://www.mysql.com/) 
+- Front-end: [Template Engine Handlebars](https://www.npmjs.com/package/express-handlebars)
    
 ## Cara Menjalankan:
 1. Clone repository ini, buka folder dan masuk terminal
@@ -22,7 +22,8 @@ Tools yang digunakan:
 
 
 ## Endpoint List API
-Test API dapat diakses di halaman http://10.151.33.43:8000/ atau http://1729da82.ngrok.io
+
+Test API dapat diakses di halaman http://10.151.33.43:8000/ atau http://466b262e.ngrok.io
 1. POST `/absen` Untuk melakukan absen  
 *sent via body: nrp, ruangan*
 
