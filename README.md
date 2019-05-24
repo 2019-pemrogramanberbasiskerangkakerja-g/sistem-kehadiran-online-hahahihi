@@ -23,17 +23,19 @@
 
 ## Endpoint List API
 
-Test API dapat diakses di halaman http://10.151.33.43:8000/ atau http://9884449c.ngrok.io 
+Test API dapat diakses di halaman http://192.168.88.58:8000/ atau http://d6a64457.ngrok.io 
 
 API Cek Database
 Terdapat 2 tabel yang dapat diakses, yaitu Tabel Mahasiswa dan Tabel matakuliah 
-- `GET /mahasiswa` 
-- Hasilnya:
+- `GET /mahasiswa` untuk melihat isi database tabel mahasiswa keseluruhan
+- Contoh: http://d6a64457.ngrok.io/mahasiswa
+- Hasilnya 
 
 ![1](img/mahasiswa.jpg)
 
-- `GET /matakuliah`
-- Hasilnya: 
+- `GET /matakuliah` untuk melihat isi database tabel matakuliah keseluruhan
+- Contoh: http://d6a64457.ngrok.io/matakuliah
+- Hasilnya 
 
 ![1](img/matkul.jpg)
 
@@ -68,25 +70,25 @@ Terdapat 2 tabel yang dapat diakses, yaitu Tabel Mahasiswa dan Tabel matakuliah
 ![5](img/absen.jpg)
 
 6. GET `/rekap/:idmatkul` Untuk melihat rekap kuliah per semester
-- Contoh: http://9884449c.ngrok.io/rekap/IF999/
+- Contoh: http://d6a64457.ngrok.io/rekap/IF999/
 - Hasilnya
 
 ![6](img/rekapmatkul.jpg)
 
 7. GET `rekap/:idmatkul/:pertemuanke` untuk Melihat rekap kuliah per pertemuan
-- Contoh: http://9884449c.ngrok.io/rekap/IF999/1
+- Contoh: http://d6a64457.ngrok.io/rekap/IF999/1
 - Hasilnya 
 
 ![7](img/rekapmatkulpertemuan.jpg)
 
 8. GET `/rekapmahasiswa/:nrp/:idmatkul` untuk Melihat rekap per mahasiswa per matkul
-- Contoh: http://9884449c.ngrok.io/rekapmahasiswa/05111540000057/IF999
+- Contoh: http://d6a64457.ngrok.io/rekapmahasiswa/05111540000057/IF999
 - Hasilnya 
 
 ![8](img/rekapmhsmatkul.jpg)
 
 9. GET `/rekapmahasiswasemester/:nrp/:idsemester` untuk Melihat rekap per mahasiswa per semester 
-- Contoh: http://9884449c.ngrok.io/rekapmahasiswasemester/164/6
+- Contoh: http://d6a64457.ngrok.io/rekapmahasiswasemester/164/6
 - Hasilnya 
 
 ![8](img/rekapmhssmt.jpg)
