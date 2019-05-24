@@ -80,9 +80,15 @@ Terdapat 2 tabel yang dapat diakses, yaitu Tabel Mahasiswa dan Tabel matakuliah
 ![7](img/rekapmatkulpertemuan.jpg)
 
 8. GET `/rekapmahasiswa/:nrp/:idmatkul` untuk Melihat rekap per mahasiswa per matkul
+- Contoh: http://9884449c.ngrok.io/rekapmahasiswa/05111540000057/IF999
+- Hasilnya 
+
 ![8](img/rekapmhsmatkul.jpg)
 
 9. GET `/rekapmahasiswasemester/:nrp/:idsemester` untuk Melihat rekap per mahasiswa per semester 
+- Contoh: http://9884449c.ngrok.io/rekapmahasiswasemester/164/6
+- Hasilnya 
+
 ![8](img/rekapmhssmt.jpg)
 
 
