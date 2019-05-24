@@ -17,7 +17,7 @@ var con = mysql.createConnection({
 
 app.get('/', function(req,res){
   console.log(timestamp('YYYY-MM-DD HH:mm:ss'));
-  res.send("hello world");
+  res.send(" API PBKK - Kelompok 5 - Naufal - Akram - Hilmi ");
 });
 
 app.post('/tambahmatkul', function (req, res) {
@@ -45,9 +45,9 @@ app.post('/tambahmatkul', function (req, res) {
             [req.body.nama, 16, req.body.semester, req.body.kelas, req.body.kode_matkul]
           ];
           con.query(sql, [values], function (err, result) {
-            console.log("data berhasil masuk");
+            console.log("data mata kuliah berhasil masuk");
           });
-          res.send({status : "sukses", pesan : "data berhasil masuk", isi_data : req.body });
+          res.send({status : "sukses", pesan : "data mata kuliah berhasil masuk", isi_data : req.body });
         }
       });
     });
@@ -74,10 +74,10 @@ app.post('/tambahjadwal', function (req, res) {
       var sql = "INSERT INTO  pertemuan_matakuliah (pertemuan, jam_mulai, jam_selesai, ruangan, matakuliah_id) VALUES ("+req.body.pertemuan+",'"+req.body.jam_mulai+"','"+req.body.jam_selesai+"','"+req.body.ruangan+"',"+"(SELECT id FROM matakuliah where kode_matkul = '"+req.body.kode_matkul+"')"+");";
       // console.log(sql);
       con.query(sql, function (err, result) {
-        console.log("data berhasil masuk");
+        console.log("data jadwal berhasil masuk");
       });
     });
-    res.send({status : "sukses", pesan : "data berhasil masuk", isi_data : req.body });
+    res.send({status : "sukses", pesan : "data jadwal berhasil masuk", isi_data : req.body });
   }
 });
 /// =================== ////
@@ -102,7 +102,7 @@ app.post('/tambahmahasiswa', function (req, res) {
           var sql = "INSERT INTO mahasiswa (nrp, nama, password) VALUES ('"+req.body.nrp+"', '"+req.body.nama+"', '"+req.body.password+"');";
           con.query(sql, function (err, result) {
             console.log(result);
-            res.send({status : "sukses", pesan : "data berhasil masuk", isi_data : req.body });
+            res.send({status : "sukses", pesan : "data mahasiswa berhasil masuk", isi_data : req.body });
           });
         }
       });    
