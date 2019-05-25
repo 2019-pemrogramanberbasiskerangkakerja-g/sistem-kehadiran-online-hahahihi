@@ -17,7 +17,7 @@ var con = mysql.createConnection({
 
 app.get('/', function(req,res){
   console.log(timestamp('YYYY-MM-DD HH:mm:ss'));
-  res.send("hello world");
+  res.send(" API PBKK - Kelompok 5 - Naufal - Akram - Hilmi ");
 });
 
 app.post('/tambahmatkul', function (req, res) {
@@ -45,9 +45,9 @@ app.post('/tambahmatkul', function (req, res) {
             [req.body.nama, 16, req.body.semester, req.body.kelas, req.body.kode_matkul]
           ];
           con.query(sql, [values], function (err, result) {
-            console.log("data berhasil masuk");
+            console.log("data mata kuliah berhasil masuk");
           });
-          res.send({status : "sukses", pesan : "data berhasil masuk", isi_data : req.body });
+          res.send({status : "sukses", pesan : "data mata kuliah berhasil masuk", isi_data : req.body });
         }
       });
     });
@@ -74,10 +74,10 @@ app.post('/tambahjadwal', function (req, res) {
       var sql = "INSERT INTO  pertemuan_matakuliah (pertemuan, jam_mulai, jam_selesai, ruangan, matakuliah_id) VALUES ("+req.body.pertemuan+",'"+req.body.jam_mulai+"','"+req.body.jam_selesai+"','"+req.body.ruangan+"',"+"(SELECT id FROM matakuliah where kode_matkul = '"+req.body.kode_matkul+"')"+");";
       // console.log(sql);
       con.query(sql, function (err, result) {
-        console.log("data berhasil masuk");
+        console.log("data jadwal berhasil masuk");
       });
     });
-    res.send({status : "sukses", pesan : "data berhasil masuk", isi_data : req.body });
+    res.send({status : "sukses", pesan : "data jadwal berhasil masuk", isi_data : req.body });
   }
 });
 /// =================== ////
@@ -102,7 +102,7 @@ app.post('/tambahmahasiswa', function (req, res) {
           var sql = "INSERT INTO mahasiswa (nrp, nama, password) VALUES ('"+req.body.nrp+"', '"+req.body.nama+"', '"+req.body.password+"');";
           con.query(sql, function (err, result) {
             console.log(result);
-            res.send({status : "sukses", pesan : "data berhasil masuk", isi_data : req.body });
+            res.send({status : "sukses", pesan : "data mahasiswa berhasil masuk", isi_data : req.body });
           });
         }
       });    
@@ -197,8 +197,10 @@ app.post('/absen', function (req, res) {
   }
 });
 
+
 app.get('/rekap/:kode_matkul', function (req, res) {
   con.connect(function(err) {
+  	console.log("rekap peserta mata kuliah");
     con.query("SELECT * FROM MAHASISWA WHERE id in (SELECT mahasiswa_id FROM ambil_matakuliah WHERE matakuliah_id = (SELECT id FROM matakuliah where kode_matkul = '"+req.params.kode_matkul+"'));", function (err, result) {
       res.send({status : "sukses", pesan : "rekap peserta mata kuliah :", isi_data : result });
     });
@@ -207,33 +209,35 @@ app.get('/rekap/:kode_matkul', function (req, res) {
 
 app.get('/rekap/:kode_matkul/:pertemuan', function (req, res) {
   con.connect(function(err) {
-    con.query("SELECT * FROM absensi WHERE mahasiswa_id IN (SELECT mahasiswa_id FROM pertemuan_matakuliah WHERE matakuliah_id = (SELECT id FROM matakuliah WHERE kode_matkul = '"+req.params.kode_matkul+"') AND pertemuan = "+req.params.pertemuan+")" , function (err, result) {
-      res.send({status : "sukses", pesan : "rekap peserta mata kuliah :", isi_data : result });
-    });
-  });
-});
-
-app.get('/rekapmahasiswasemester/:nrp/:semester', function (req, res) {
-  con.connect(function(err) {
-    console.log("masuk bang");
-    var sql = "SELECT * FROM absensi WHERE mahasiswa_id in (SELECT mahasiswa_id FROM pertemuan_matakuliah WHERE mahasiswa_id = (SELECT id FROM mahasiswa where NRP="+req.params.nrp+") AND matakuliah_id in (SELECT id FROM matakuliah where semester = '"+req.params.semester+"'));";
-    con.query(sql , function (err, result) {
-      res.send({status : "sukses", pesan : "rekap peserta mata kuliah :", isi_data : result });
+  	console.log("rekap mata kuliah per pertemuan");
+    con.query("SELECT * FROM absensi WHERE mahasiswa_id IN (SELECT mahasiswa_id FROM pertemuan_matakuliah WHERE matakuliah_id = (SELECT id FROM matakuliah WHERE kode_matkul = '"+req.params.kode_matkul+"') AND pertemuan_matakuliah_id IN (SELECT id FROM pertemuan_matakuliah where pertemuan = '"+req.params.pertemuan+"'));" , function (err, result) {
+      res.send({status : "sukses", pesan : "rekap mata kuliah per pertemuan:", isi_data : result });
     });
   });
 });
 
 app.get('/rekapmahasiswa/:nrp/:kode_matkul', function (req, res) {
   con.connect(function(err) {
+  	console.log("rekap mahasiswa per mata kuliah");
     con.query("SELECT * FROM absensi WHERE mahasiswa_id IN (SELECT id FROM mahasiswa WHERE nrp = '"+req.params.nrp+"') AND pertemuan_matakuliah_id IN (SELECT id FROM pertemuan_matakuliah where matakuliah_id=(SELECT id FROM matakuliah WHERE kode_matkul = '"+req.params.kode_matkul+"'));" , function (err, result) {
-      res.send({status : "sukses", pesan : "rekap peserta mata kuliah :", isi_data : result });
+      res.send({status : "sukses", pesan : "rekap mahasiswa per mata kuliah :", isi_data : result });
+    });
+  });
+});
+
+app.get('/rekapmahasiswasemester/:nrp/:semester', function (req, res) {
+  con.connect(function(err) {
+    console.log("rekap mahasiswa per semester");
+    var sql = "SELECT * FROM absensi WHERE mahasiswa_id in (SELECT mahasiswa_id FROM pertemuan_matakuliah WHERE mahasiswa_id = (SELECT id FROM mahasiswa where NRP="+req.params.nrp+") AND matakuliah_id in (SELECT id FROM matakuliah where semester = '"+req.params.semester+"'));";
+    con.query(sql , function (err, result) {
+      res.send({status : "sukses", pesan : "rekap mahasiswa per semester :", isi_data : result });
     });
   });
 });
 
 app.get('/mahasiswa', function(req,res){
   con.connect(function(err) {
-    con.query("SELECT * FROM mahasiswa;" , function (err, result) {
+    con.query("SELECT id, nrp, nama FROM mahasiswa;" , function (err, result) {
       res.send({status : "sukses", pesan : "rekap mahasiswa :", isi_data : result });
     });
   });
@@ -241,7 +245,7 @@ app.get('/mahasiswa', function(req,res){
 
 app.get('/matakuliah', function(req,res){
   con.connect(function(err) {
-    con.query("SELECT * FROM matakuliah;" , function (err, result) {
+    con.query("SELECT id, kode_matkul, nama, semester, kelas FROM matakuliah;" , function (err, result) {
       res.send({status : "sukses", pesan : "rekap matakuliah :", isi_data : result });
     });
   });
